@@ -24,6 +24,9 @@ public enum MessageType {
         if (EVENT == this) {
             return SimpleEvent.class;
         }
+        if (VOICE == this) {
+            return VoiceMessage.class;
+        }
         return null;
     }
 }
