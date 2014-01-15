@@ -42,6 +42,9 @@ public class WechatUtils {
     }
 
     public static AccessToken getAccessToken(String appid, String secret) {
+        if (appid == null || secret == null) {
+            throw new IllegalArgumentException("appid or secret was null.");
+        }
         ClientConfig config = new DefaultClientConfig();
         Client client = Client.create(config);
         WebResource cosmsservice = client.resource("https://api.weixin.qq.com/cgi-bin/token");

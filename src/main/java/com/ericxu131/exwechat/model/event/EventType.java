@@ -23,6 +23,9 @@ public enum EventType {
         if (this == CLICK) {
             return ClickEvent.class;
         }
+        if (this == SCAN) {
+            return ScanEvent.class;
+        }
         return null;
     }
 }
