@@ -1,7 +1,6 @@
 package com.ericxu131.exwechat.model.message;
 
 import com.ericxu131.exwechat.model.event.SimpleEvent;
-import static com.ericxu131.exwechat.model.message.MessageType.EVENT;
 import javax.xml.bind.annotation.XmlEnumValue;
 
 /**
@@ -11,22 +10,19 @@ import javax.xml.bind.annotation.XmlEnumValue;
 public enum MessageType {
 
     @XmlEnumValue("text")
-    TEXT,
+    TEXT(TextMessage.class),
     @XmlEnumValue("event")
-    EVENT,
+    EVENT(SimpleEvent.class),
     @XmlEnumValue("voice")
-    VOICE;
+    VOICE(VoiceMessage.class);
+
+    private MessageType(Class messageClass) {
+        this.messageClass = messageClass;
+    }
+
+    private final Class messageClass;
 
     public Class getMessageClass() {
-        if (TEXT == this) {
-            return TextMessage.class;
-        }
-        if (EVENT == this) {
-            return SimpleEvent.class;
-        }
-        if (VOICE == this) {
-            return VoiceMessage.class;
-        }
-        return null;
+        return messageClass;
     }
 }

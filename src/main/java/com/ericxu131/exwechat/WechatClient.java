@@ -71,7 +71,7 @@ public class WechatClient {
         }
     }
 
-    public WechatQRCode qrCodeCreate(Integer expireSeconds, QRCodeCreateActionName actionName, String actionInfo, int sceneId) {
+    public WechatQRCode qrCodeCreate(Integer expireSeconds, QRCodeCreateActionName actionName, int sceneId) {
         if (QRCodeCreateActionName.QR_SCENE == actionName) {
             if (expireSeconds == null || expireSeconds < 1 || expireSeconds > 1800) {
                 throw new IllegalArgumentException("expireSeconds must between 1 to 1800");
@@ -86,9 +86,11 @@ public class WechatClient {
         Client client = Client.create(config);
         WebResource webResource = client.resource("https://api.weixin.qq.com/cgi-bin/qrcode/create");
         ClientResponse clientResponse;
+        Map data = new QRCodeBuilder(actionName).expireSeconds(expireSeconds).sceneId(sceneId).bulid();
+        logger.debug("QRCode Post:{}", data.toString());
         clientResponse = webResource
                 .queryParam("access_token", getAccessToken().getToken())
-                .post(ClientResponse.class, new Gson().toJson(new QRCodeBuilder(actionName).expireSeconds(expireSeconds).actionInfo(actionInfo).sceneId(sceneId).bulid()));
+                .post(ClientResponse.class, new Gson().toJson(data));
         if (clientResponse.getStatus() != 200) {
             throw new IllegalStateException("status error:" + clientResponse.getStatus());
         } else {
@@ -128,13 +130,13 @@ public class WechatClient {
             return this;
         }
 
-        private QRCodeBuilder actionInfo(String actionInfo) {
-            qrCode.put("action_info", actionInfo);
-            return this;
-        }
-
         private QRCodeBuilder sceneId(int sceneId) {
-            qrCode.put("scene_id", sceneId);
+            Map actionInfo = (Map) qrCode.get("action_info");
+            if (actionInfo == null) {
+                actionInfo = new HashMap();
+                qrCode.put("action_info", actionInfo);
+            }
+            actionInfo.put("scene_id", sceneId);
             return this;
         }
 
