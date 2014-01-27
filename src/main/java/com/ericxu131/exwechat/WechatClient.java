@@ -136,7 +136,12 @@ public class WechatClient {
                 actionInfo = new HashMap();
                 qrCode.put("action_info", actionInfo);
             }
-            actionInfo.put("scene_id", sceneId);
+            Map scene = (Map) actionInfo.get("scene");
+            if (scene == null) {
+                scene = new HashMap();
+                actionInfo.put("scene", scene);
+            }
+            scene.put("scene_id", sceneId);
             return this;
         }
 
