@@ -14,7 +14,9 @@ public enum MessageType {
     @XmlEnumValue("event")
     EVENT(SimpleEvent.class),
     @XmlEnumValue("voice")
-    VOICE(VoiceMessage.class);
+    VOICE(VoiceMessage.class),
+    @XmlEnumValue("news")
+    NEWS(VoiceMessage.class);
 
     private MessageType(Class messageClass) {
         this.messageClass = messageClass;

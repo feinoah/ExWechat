@@ -3,6 +3,7 @@ package com.ericxu131.exwechat.web;
 import com.ericxu131.exwechat.WechatContext;
 import com.ericxu131.exwechat.model.event.SimpleEvent;
 import com.ericxu131.exwechat.model.message.Message;
+import com.ericxu131.exwechat.model.message.NewsMessage;
 import com.ericxu131.exwechat.model.message.SimpleMessage;
 import com.ericxu131.exwechat.model.message.TextMessage;
 import com.ericxu131.exwechat.utils.JAXBUtils;
@@ -120,6 +121,13 @@ public abstract class WechatServlet extends HttpServlet {
 
     protected TextMessage replyTextMessage(Message message) {
         TextMessage responseTextMessage = new TextMessage();
+        responseTextMessage.setFromUserName(message.getToUserName());
+        responseTextMessage.setToUserName(message.getFromUserName());
+        return responseTextMessage;
+    }
+
+    protected NewsMessage replyNewsMessage(Message message) {
+        NewsMessage responseTextMessage = new NewsMessage();
         responseTextMessage.setFromUserName(message.getToUserName());
         responseTextMessage.setToUserName(message.getFromUserName());
         return responseTextMessage;
